@@ -211,3 +211,4 @@ __marimo__/
 .e n v
 database.ini
 .idea
+poetry.lock
