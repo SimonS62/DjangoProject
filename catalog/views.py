@@ -1,6 +1,4 @@
-from django.shortcuts import render, redirect
-# from django.core.mail import send_mail  # УДАЛЯЕМ ИМПОРТ
-
+from django.shortcuts import render, redirect, get_object_or_404
 import json
 from datetime import datetime
 
@@ -45,3 +43,18 @@ def contacts(request):
 
 def home(request):
     return render(request, 'catalog/home.html')
+
+
+def product_detail(request, pk):
+    """
+    Отображает подробную информацию о конкретном товаре.
+    """
+    product = get_object_or_404(Product, pk=pk) # Получаем товар по id или возвращаем 404, если не найден
+    context = {'product': product}
+    return render(request, 'templates/product_detail.html', context)
+
+
+def home(request):
+    products = Product.objects.all() # Получаем все товары из базы данных
+    context = {'products': products}
+    return render(request, 'templates/home.html', context)
