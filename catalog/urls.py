@@ -4,6 +4,6 @@ from . import views  # Импортируем представления (кон
 
 urlpatterns = [
     path('', views.home, name='home'),  # Главная страница
-    path('contacts/', views.contacts, name='contacts'), #страница контактов
-    path('product/<int:pk>/', views.product_detail, name='product_detail'), # Маршрут для отображения информации о товаре
+    path('contacts/', views.contacts, name='contacts'),
+    path('product/<int:pk>/', views.product_detail, name='product_detail'),
 ]
