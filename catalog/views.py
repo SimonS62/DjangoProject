@@ -26,11 +26,11 @@ def contacts(request):
                 f.write('\n')
         except Exception as e:
             print(f"Ошибка при записи в файл: {e}")
-            return render(request, 'catalog/catalog/contacts.html', {'error_message': 'Произошла ошибка при сохранении данных.'}) # Исправлен путь
+            return render(request, 'catalog/contacts.html', {'error_message': 'Произошла ошибка при сохранении данных.'}) # Исправлен путь
 
         return redirect('home')
 
-    return render(request, 'catalog/catalog/contacts.html')
+    return render(request, 'catalog/contacts.html')
 
 
 def home(request):
@@ -39,7 +39,7 @@ def home(request):
     """
     products = Product.objects.all()
     context = {'products': products}
-    return render(request, 'catalog/catalog/home.html', context)
+    return render(request, 'catalog/home.html', context)
 
 
 def product_detail(request, pk):
@@ -48,4 +48,4 @@ def product_detail(request, pk):
     """
     product = get_object_or_404(Product, pk=pk)
     context = {'product': product}
-    return render(request, 'catalog/catalog/product_detail.html', context)
+    return render(request, 'catalog/product_detail.html', context)
