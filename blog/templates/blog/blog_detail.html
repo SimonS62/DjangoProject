@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% include "includes/main_menu.html" %}
+    <h1>{{ blog.title }}</h1>
+    <img src="{{ blog.preview.url }}" alt="{{ blog.title }}">
+    <p>{{ blog.content }}</p>
+    <p>Просмотров: {{ blog.views_count }}</p>
+    <p>Дата создания: {{ blog.created_at }}</p>
+    <a href="{% url 'blog_update' pk=blog.pk %}">Редактировать</a> |
+    <a href="{% url 'blog_delete' pk=blog.pk %}">Удалить</a>
+{% endblock %}

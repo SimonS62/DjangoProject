@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import View
 import json
 from datetime import datetime
 from .models import Product
@@ -49,3 +50,33 @@ def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     context = {'product': product}
     return render(request, 'catalog/product_detail.html', context)
+
+
+class ContactsView(View):
+    template_name = 'catalog/contacts.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)
+
+    def post(self, request, *args, **kwargs):
+        name = request.POST.get('name')
+        phone = request.POST.get('phone')
+        message = request.POST.get('message')
+
+        data = {
+            'timestamp': datetime.now().isoformat(),
+            'name': name,
+            'phone': phone,
+            'message': message
+        }
+
+        try:
+            with open('contacts.json', 'a', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False)
+                f.write('\n')
+        except Exception as e:
+            print(f"Ошибка при записи в файл: {e}")
+            context = {'error_message': 'Произошла ошибка при сохранении данных.'}
+            return render(request, self.template_name, context)
+
+        return redirect('home')

@@ -1,9 +1,8 @@
 from django.urls import path
-from . import views  # Импортируем представления (контроллеры)
-
+from .views import ContactsView, home, product_detail
 
 urlpatterns = [
-    path('', views.home, name='home'),  # Главная страница
-    path('contacts/', views.contacts, name='contacts'),
-    path('product/<int:pk>/', views.product_detail, name='product_detail'),
+    path('', home, name='home'),
+    path('contacts/', ContactsView.as_view(), name='contacts'),
+    path('product/<int:pk>/', product_detail, name='product_detail'),
 ]

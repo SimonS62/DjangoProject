@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% include "includes/main_menu.html" %}
+    <h1>Список статей блога</h1>
+    {% for blog in blogs %}
+        <div class="blog-item">
+            <h2><a href="{% url 'blog_detail' pk=blog.pk %}">{{ blog.title }}</a></h2>
+            <p>{{ blog.content|truncatechars:200 }}</p>
+            <a href="{% url 'blog_update' pk=blog.pk %}">Редактировать</a> |
+            <a href="{% url 'blog_delete' pk=blog.pk %}">Удалить</a>
+        </div>
+    {% endfor %}
+    <a href="{% url 'blog_create' %}">Создать новую статью</a>
+{% endblock %}
