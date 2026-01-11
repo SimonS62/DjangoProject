@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    {% include "includes/main_menu.html" %}
+    <h1>Удалить статью</h1>
+    <p>Вы уверены, что хотите удалить статью "{{ object.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Удалить</button>
+        <a href="{% url 'blog_detail' pk=object.pk %}">Отмена</a>
+    </form>
+{% endblock %}
