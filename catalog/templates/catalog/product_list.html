@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Список товаров</h1>
+    <a href="{% url 'product_create' %}">Добавить новый товар</a>
+    <ul>
+        {% for product in products %}
+            <li>
+                <a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a>
+                <a href="{% url 'product_update' product.pk %}">Редактировать</a>
+                <a href="{% url 'product_delete' product.pk %}">Удалить</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

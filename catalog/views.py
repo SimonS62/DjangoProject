@@ -41,7 +41,32 @@ class HomeListView(ListView):
     context_object_name = 'products'  # Передаем список продуктов в шаблон под именем 'products'
 
 
+class ProductListView(ListView):
+    model = Product
+    template_name = 'catalog/product_list.html'
+    context_object_name = 'products'
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
-    context_object_name = 'product'  # Один продукт передается в шаблон под именем 'product'
+    context_object_name = 'product'
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm  # Используйте форму
+    template_name = 'catalog/product_form.html'  # Форма для создания
+    success_url = reverse_lazy('product_list')  # Перенаправление после успеха
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'  # Одна форма для создания и обновления
+    success_url = reverse_lazy('product_list')  # Перенаправление
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'catalog/product_confirm_delete.html'
+    success_url = reverse_lazy('product_list')
