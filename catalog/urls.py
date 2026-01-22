@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import ContactsView, home, product_detail, ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDeleteView
 
 urlpatterns = [
@@ -10,4 +10,6 @@ urlpatterns = [
     path('product/create/', ProductCreateView.as_view(), name='product_create'),
     path('product/<int:pk>/update/', ProductUpdateView.as_view(), name='product_update'),
     path('product/<int:pk>/delete/', ProductDeleteView.as_view(), name='product_delete'),
+    path('users/', include('users.urls', namespace='users')),
+    path('catalog/', include('catalog.urls', namespace='catalog')),
 ]
