@@ -22,8 +22,9 @@ from django.urls import include, path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('catalog.urls')),  # Включаем маршруты из приложения catalog
+    path('catalog/', include('catalog.urls')),  # Включаем маршруты из приложения catalog
     path('blogs/', include('blog.urls')),
+    path('users/', include('users.urls', namespace='users')),
 ]
 
 if settings.DEBUG:
