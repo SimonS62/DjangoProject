@@ -1,12 +1,23 @@
-{% extends 'base.html' %}
+{% extends 'catalog/base.html' %}
 
 {% block content %}
-    <h1>{{ product.name }}</h1>
-    <p>{{ product.description }}</p>
-    <p>Цена: {{ product.price }}</p>
-    {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 200px;">
+  <h2>{{ product.name }}</h2>
+  <p>{{ product.description }}</p>
+  <p>Цена: {{ product.price }}</p>
+  <p>Категория: {{ product.category }}</p>
+
+  {% if product.image %}
+    <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
+  {% endif %}
+
+  {% if request.user.is_authenticated and (request.user == product.owner or is_moderator) %}
+    <a href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
+    <a href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
+  {% endif %}
+  {% if request.user.is_authenticated and request.user.has_perm('catalog.can_unpublish_product') or request.user == product.owner %}
+      <a href="{% url 'catalog:unpublish_product' product.pk %}">Снять с публикации</a>
     {% endif %}
-    <a href="{% url 'product_update' product.pk %}">Редактировать</a>
-    <a href="{% url 'product_delete' product.pk %}">Удалить</a>
+
+
+
 {% endblock %}
