@@ -1,0 +1,42 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "Электроника",
+      "description": "Смартфоны, ноутбуки, планшеты и другая электроника",
+      "created_at": "2024-01-01T00:00:00Z",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "Одежда",
+      "description": "Мужская, женская и детская одежда",
+      "created_at": "2024-01-01T00:00:00Z",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "Книги",
+      "description": "Художественная литература, учебники, справочники",
+      "created_at": "2024-01-01T00:00:00Z",
+      "is_active": true
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+      "name": "Товары для дома",
+      "description": "Мебель, посуда, текстиль и декор",
+      "created_at": "2024-01-01T00:00:00Z",
+      "is_active": true
+    }
+  }
+]

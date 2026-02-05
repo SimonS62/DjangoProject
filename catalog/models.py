@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    is_active = models.BooleanField(default=True, verbose_name='Активна')
 
     def __str__(self):
         return self.name
@@ -11,6 +13,17 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+        ordering = ['name']
+
+    def product_count(self):
+        """Количество продуктов в категории"""
+        from django.db.models import Count
+        return self.product_set.aggregate(Count('id'))['id__count']
+
+    def published_product_count(self):
+        """Количество опубликованных продуктов"""
+        from django.db.models import Count
+        return self.product_set.filter(is_published=True).aggregate(Count('id'))['id__count']
 
 
 class Product(models.Model):
@@ -26,13 +39,17 @@ class Product(models.Model):
     # Добавляем поле для владельца
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Владелец')
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
-        # Добавляем кастомное разрешение
         permissions = [
             ('can_unpublish_product', 'Can unpublish product'),
         ]
+        ordering = ['-creation_date']
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('catalog:product_detail', kwargs={'pk': self.pk})

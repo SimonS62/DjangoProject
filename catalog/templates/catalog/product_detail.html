@@ -1,23 +1,127 @@
 {% extends 'catalog/base.html' %}
 
+{% block title %}
+    {{ product.name }} - Мой магазин
+{% endblock %}
+
 {% block content %}
-  <h2>{{ product.name }}</h2>
-  <p>{{ product.description }}</p>
-  <p>Цена: {{ product.price }}</p>
-  <p>Категория: {{ product.category }}</p>
+    <div class="product-detail">
+        <h1>{{ product.name }}</h1>
 
-  {% if product.image %}
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" width="200">
-  {% endif %}
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+        {% endif %}
 
-  {% if request.user.is_authenticated and (request.user == product.owner or is_moderator) %}
-    <a href="{% url 'catalog:product_update' product.pk %}">Редактировать</a>
-    <a href="{% url 'catalog:product_delete' product.pk %}">Удалить</a>
-  {% endif %}
-  {% if request.user.is_authenticated and request.user.has_perm('catalog.can_unpublish_product') or request.user == product.owner %}
-      <a href="{% url 'catalog:unpublish_product' product.pk %}">Снять с публикации</a>
-    {% endif %}
+        <div class="product-info">
+            <p><strong>Описание:</strong> {{ product.description }}</p>
+            <p><strong>Цена:</strong> {{ product.price }} руб.</p>
+            <p><strong>Категория:</strong> {{ product.category.name }}</p>
+            <p><strong>Дата создания:</strong> {{ product.creation_date|date:"d.m.Y H:i" }}</p>
+            <p><strong>Статус:</strong>
+                {% if product.is_published %}
+                    <span class="status published">Опубликовано</span>
+                {% else %}
+                    <span class="status draft">Черновик</span>
+                {% endif %}
+            </p>
 
+            {% if product.owner %}
+                <p><strong>Владелец:</strong> {{ product.owner.username }}</p>
+            {% endif %}
+        </div>
 
+        <!-- Кнопки действий для авторизованных пользователей -->
+        {% if request.user.is_authenticated %}
+            {% if request.user == product.owner or is_moderator %}
+                <div class="action-buttons">
+                    <a href="{% url 'catalog:product_update' product.pk %}" class="btn btn-primary">
+                        Редактировать
+                    </a>
+                    <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">
+                        Удалить
+                    </a>
+                </div>
+            {% endif %}
 
+            {% if request.user.has_perm 'catalog.can_unpublish_product' or request.user == product.owner %}
+                {% if product.is_published %}
+                    <div class="action-buttons">
+                        <a href="{% url 'catalog:unpublish_product' product.pk %}" class="btn btn-warning">
+                            Снять с публикации
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <style>
+        .product-detail {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .product-image {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .product-info p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .status.published {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status.draft {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+    </style>
 {% endblock %}
