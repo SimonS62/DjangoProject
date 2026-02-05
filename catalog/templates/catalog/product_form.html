@@ -1,0 +1,14 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+  <h2>{% if form.instance.pk %}Редактировать продукт{% else %}Создать продукт{% endif %}</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% if is_moderator %}
+      <label for="id_is_published">Опубликовано:</label>
+      <input type="checkbox" name="is_published" id="id_is_published" {% if form.instance.is_published %}checked{% endif %}>
+    {% endif %}
+    <button type="submit">Сохранить</button>
+  </form>
+{% endblock %}
